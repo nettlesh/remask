@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>remask</title>
+<style>
+  :root {
+    --bg: #fafaf9; --fg: #1c1917; --muted: #57534e; --line: #d6d3d1;
+    --card: #fff; --accent: #0b5cd5; --code: #f5f5f4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1917; --fg: #f5f5f4; --muted: #a8a29e; --line: #44403c;
+      --card: #292524; --accent: #7cb3ff; --code: #0c0a09;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 16px/1.6 system-ui, sans-serif;
+  }
+  main { max-width: 680px; margin: 0 auto; padding: 48px 16px 64px; }
+  h1 { font-size: 28px; margin: 0 0 4px; }
+  h2 { font-size: 18px; margin: 32px 0 8px; }
+  p, li { color: var(--muted); }
+  a { color: var(--accent); }
+  .install {
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+    margin: 24px 0; padding: 20px; background: var(--card);
+    border: 1px solid var(--line); border-radius: 8px;
+  }
+  .bookmarklet {
+    padding: 10px 16px; border-radius: 6px; background: var(--accent); color: var(--bg);
+    font-weight: 600; text-decoration: none; cursor: grab;
+  }
+  button {
+    padding: 10px 16px; border-radius: 6px; border: 1px solid var(--line);
+    background: transparent; color: var(--fg); font: inherit; cursor: pointer;
+  }
+  pre {
+    overflow-x: auto; padding: 16px; background: var(--code);
+    border: 1px solid var(--line); border-radius: 8px; font-size: 13px; line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>remask</h1>
+  <p>A bookmarklet that gets 1Password to offer <strong>Create Masked Email</strong>
+    on any site: change-email pages on accounts you already have, or sign-up forms
+    1Password doesn't recognize. The Masked Email is saved with the right website in
+    both 1Password and Fastmail.</p>
+
+  <div class="install">
+    <a class="bookmarklet" id="bookmarklet" href="#" onclick="return false">remask</a>
+    <button id="copy" type="button">Copy bookmarklet URL</button>
+    <span id="copied" role="status"></span>
+  </div>
+  <p>Drag the button to your bookmarks bar. On iPhone or iPad, bookmark any page,
+    then edit the bookmark and paste the copied URL as its address.</p>
+
+  <h2>How to use it</h2>
+  <ol>
+    <li>On the site you want a Masked Email for, click the bookmark.
+      A registration form appears in the corner.</li>
+    <li>Click <strong>Email</strong> and choose <strong>Create Masked Email</strong> in the 1Password menu.</li>
+    <li>Enter the site's password in both password fields (your current one, or a new
+      one from 1Password) and press <strong>Register</strong>. Nothing is sent to the site.</li>
+    <li>When 1Password asks, update your existing login or save a new one.</li>
+    <li>Press <strong>Copy &amp; close</strong>, then paste the address into the site's real form.</li>
+  </ol>
+
+  <h2>Source</h2>
+  <p>The bookmark above is built from this exact file,
+    <a href="remask.js">remask.js</a>.</p>
+  <pre id="source">Loading…</pre>
+</main>
+<script>
+  // Turns the readable source into a javascript: URL. Only whole-line
+  // comments and indentation are removed; line breaks are kept.
+  const toBookmarklet = source => "javascript:" + encodeURIComponent(
+    source.split("\n")
+      .map(line => line.trim())
+      .filter(line => line && !line.startsWith("//"))
+      .join("\n"));
+
+  fetch("remask.js")
+    .then(response => response.text())
+    .then(source => {
+      const url = toBookmarklet(source);
+      const link = document.getElementById("bookmarklet");
+      link.href = url;
+      link.removeAttribute("onclick");
+      document.getElementById("source").textContent = source;
+      document.getElementById("copy").onclick = async () => {
+        await navigator.clipboard.writeText(url);
+        document.getElementById("copied").textContent = "Copied";
+      };
+    });
+</script>
+</body>
+</html>
