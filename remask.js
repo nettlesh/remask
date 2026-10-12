@@ -78,40 +78,43 @@
 
   // No `all:initial` here: in some browsers it would also reset the path data.
   const STROKE = "fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;";
-  const icon = (size, paths) => {
+  const FILL = "fill:currentColor;fill-rule:evenodd;stroke:none;";
+  const icon = (size, { box = 24, filled = false, paths }) => {
     const ns = "http://www.w3.org/2000/svg";
+    const style = filled ? FILL : STROKE;
     const svg = document.createElementNS(ns, "svg");
-    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("viewBox", `0 0 ${box} ${box}`);
     svg.setAttribute("aria-hidden", "true");
-    svg.style.cssText = `display:block;flex:none;width:${size}px;height:${size}px;margin:0;` + STROKE;
+    svg.style.cssText = `display:block;flex:none;width:${size}px;height:${size}px;margin:0;` + style;
     for (const d of paths) {
       const path = document.createElementNS(ns, "path");
       path.setAttribute("d", d);
-      path.style.cssText = STROKE;
+      path.style.cssText = style;
       svg.append(path);
     }
     return svg;
   };
   const ICONS = {
-    mask: [
-      "M2.5 9.5C2.5 7 4.5 6 7 6c2 0 3.5 1 5 1s3-1 5-1c2.5 0 4.5 1 4.5 3.5C21.5 14 19 17 16.5 17c-2 0-3-2-4.5-2s-2.5 2-4.5 2C5 17 2.5 14 2.5 9.5Z",
-      "M6.5 11c.5-1 1.5-1.5 2.5-1.5s1.8.6 2 1.5c-.6.6-1.4 1-2.2 1S7 11.6 6.5 11Z",
-      "M17.5 11c-.5-1-1.5-1.5-2.5-1.5s-1.8.6-2 1.5c.6.6 1.4 1 2.2 1s1.8-.4 2.3-1Z",
-    ],
-    help: [
+    // Same mask as assets/remask.svg.
+    mask: { box: 16, filled: true, paths: [
+      "M1 6.6C1 4.9 2.3 4 4.1 4c1.6 0 2.7.7 3.9.7S10.3 4 11.9 4C13.7 4 15 4.9 15 6.6c0 3.1-1.8 5.4-3.8 5.4-1.4 0-2.1-1.2-3.2-1.2s-1.8 1.2-3.2 1.2C2.8 12 1 9.7 1 6.6Z" +
+      "M3.3 7.5c.4-.8 1.1-1.3 2-1.3.8 0 1.4.4 1.6 1.2-.5.6-1.2.9-2 .9-.6 0-1.2-.3-1.6-.8Z" +
+      "M12.7 7.5c-.4-.8-1.1-1.3-2-1.3-.8 0-1.4.4-1.6 1.2.5.6 1.2.9 2 .9.6 0 1.2-.3 1.6-.8Z",
+    ] },
+    help: { paths: [
       "M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0",
       "M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.3",
       "M12 17h.01",
-    ],
-    close: ["M18 6 6 18", "M6 6l12 12"],
+    ] },
+    close: { paths: ["M18 6 6 18", "M6 6l12 12"] },
   };
 
   const FOCUS = "outline:2px solid var(--rm-accent);outline-offset:1px;";
-  const iconButton = (label, paths, onclick) => interactive("button",
+  const iconButton = (label, glyph, onclick) => interactive("button",
     "display:flex;align-items:center;justify-content:center;width:26px;height:26px;" +
     "border-radius:6px;color:var(--rm-muted);cursor:pointer;",
     { hover: "background:var(--rm-chip);color:var(--rm-fg);", focus: FOCUS },
-    { type: "button", title: label, ariaLabel: label, onclick }, icon(20, paths));
+    { type: "button", title: label, ariaLabel: label, onclick }, icon(20, glyph));
   const button = (text, primary, props) => interactive("button",
     "display:inline-block;padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:600;" +
     (primary ? "background:var(--rm-accent);color:var(--rm-on-accent);" : "background:var(--rm-chip);"),
@@ -185,7 +188,7 @@
       "Open it in Safari, Chrome, or Edge instead." });
 
   const header = el("div", "display:flex;align-items:center;gap:6px;", {},
-    el("span", "display:flex;color:var(--rm-accent);", {}, icon(18, ICONS.mask)),
+    el("span", "display:flex;color:var(--rm-accent);", {}, icon(20, ICONS.mask)),
     el("span", "font-weight:600;", { textContent: "remask" }),
     el("span", "flex:1;"),
     el("div", "display:flex;margin:-4px -6px -4px 0;", {},

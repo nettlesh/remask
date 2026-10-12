@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>remask</title>
+<link rel="icon" href="assets/remask.svg" type="image/svg+xml">
 <style>
   :root {
     --bg: #fafaf9; --fg: #1c1917; --muted: #57534e; --line: #d6d3d1;
@@ -21,7 +22,7 @@
     font: 16px/1.6 system-ui, sans-serif;
   }
   main { max-width: 680px; margin: 0 auto; padding: 48px 16px 64px; }
-  h1 { font-size: 28px; margin: 0 0 4px; }
+  h1 { display: flex; align-items: center; gap: 12px; font-size: 28px; margin: 0 0 4px; }
   h2 { font-size: 18px; margin: 32px 0 8px; }
   p, li { color: var(--muted); }
   a { color: var(--accent); }
@@ -46,7 +47,7 @@
 </head>
 <body>
 <main>
-  <h1>remask</h1>
+  <h1><img src="assets/remask.svg" width="36" height="36" alt="">remask</h1>
   <p>A bookmarklet that gets 1Password to offer <strong>Create Masked Email</strong>
     on any site: change-email pages on accounts you already have, or sign-up forms
     1Password doesn't recognize. The Masked Email is saved with the right website in

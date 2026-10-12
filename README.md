@@ -1,3 +1,5 @@
+<img src="assets/remask.svg" width="64" height="64" alt="">
+
 # remask
 
 A bookmarklet that gets 1Password to offer **Create Masked Email** (Fastmail) on any site.
@@ -29,6 +31,21 @@ bookmark and paste the URL as its address.
 The form is never sent anywhere; it only exists in your tab. While it's open, the
 address bar shows `/registration` so 1Password treats the page as a sign-up. Close the
 form before reloading the page.
+
+## Toolbar icon (Zen and Firefox)
+
+Bookmarklets always get the browser's default icon. In Zen or Firefox, you can give
+remask its own:
+
+1. In `about:config`, set `toolkit.legacyUserProfileCustomizations.stylesheets` to `true`.
+2. In `about:support`, click the button next to **Profile Folder** to open it.
+3. In that folder, open the `chrome` folder (create it if it's missing) and copy the
+   contents of [`assets/userChrome.css`](assets/userChrome.css) into `userChrome.css`
+   there, creating the file if needed.
+4. Restart the browser.
+
+The rule looks for a bookmark named **remask**, so keep that name. Chrome, Edge, and
+Safari don't support custom bookmark icons.
 
 ## Troubleshooting
 
