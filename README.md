@@ -18,10 +18,12 @@ bookmark and paste the URL as its address.
 ## Use
 
 1. On the site you want a Masked Email for, click the bookmark.
-2. Click **Email** and choose **Create Masked Email**.
-3. Enter the site's password in both password fields (your current one, or a new one
-   from 1Password) and press **Register**.
-4. When 1Password asks, update your existing login or save a new one.
+2. Fill the password: press **⌘\\** (**Ctrl+\\** on Windows) or use **Autofill** in the
+   1Password toolbar. For a new account, generate a password instead. Do this before the
+   next step, because autofill also fills your old email address.
+3. Click **Email** and choose **Create Masked Email**.
+4. Press **Register**, then choose **Update** (existing login) or **Save** (new login)
+   in 1Password.
 5. Press **Copy & close** and paste the address into the site's real form.
 
 The form is never sent anywhere; it only exists in your tab. While it's open, the
