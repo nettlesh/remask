@@ -29,8 +29,8 @@ bookmark and paste the URL as its address.
 5. Press **Copy & close** and paste the address into the site's real form.
 
 The form is never sent anywhere; it only exists in your tab. While it's open, the
-address bar shows `/registration` so 1Password treats the page as a sign-up. Close the
-form before reloading the page.
+address bar shows `/registration` and the tab is titled **Create account**, so 1Password
+treats the page as a sign-up. Close the form before reloading the page.
 
 ## Toolbar icon (Zen and Firefox)
 

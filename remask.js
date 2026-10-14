@@ -26,9 +26,12 @@
   const extensionsBlocked = /Firefox\//.test(navigator.userAgent) &&
     FIREFOX_BLOCKED.includes(location.hostname);
 
-  const original = { url: location.href, state: history.state };
+  const original = { url: location.href, state: history.state, title: document.title };
   // A sign-up-looking URL helps 1Password classify the form as a registration.
   const fakeURL = new URL("/registration", location.origin).href;
+  // So does the title: with "Sign in" or "Username" in it, 1Password offers the
+  // saved login instead of Create Masked Email.
+  const fakeTitle = "Create account";
   const prefix = "remask-" + crypto.randomUUID();
   // Prefer plain ids for 1Password's heuristics unless the page already uses them.
   const fieldID = name => document.getElementById(name) ? `${prefix}-${name}` : name;
@@ -164,6 +167,7 @@
     try {
       // Leave the URL alone if the site has navigated since we changed it.
       if (location.href === fakeURL) history.replaceState(original.state, "", original.url);
+      if (document.title === fakeTitle) document.title = original.title;
     } finally {
       dark.removeEventListener("change", paintTheme);
       panel.remove();
@@ -225,6 +229,7 @@
     paintTheme();
     dark.addEventListener("change", paintTheme);
     history.replaceState(original.state, "", fakeURL);
+    document.title = fakeTitle;
     window[KEY] = { close };
     document.body.append(panel);
     // Autofill comes first; filling after the Masked Email would overwrite it.
